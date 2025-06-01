@@ -2,48 +2,69 @@ import java.util.Scanner;
 
 public class Helper {
 
-    private final int numberOne;
-    private final int numberTwo;
+    private int numberOne;
+    private int numberTwo;
 
-    Helper(int numberOne, int numberTwo) {
+    Scanner sc = new Scanner(System.in);
+
+    void setNumberOne(int numberOne) {
         this.numberOne = numberOne;
+    }
+
+    void setNumberTwo(int numberTwo) {
         this.numberTwo = numberTwo;
     }
 
-    Display obj = new Display();
 
-    boolean operate() {
-        System.out.println("Enter the operation no you want to perform");
-        System.out.println("1. Addition");
-        System.out.println("2. Subtraction");
-        System.out.println("3. Multiplication");
-        System.out.println("4. Division");
-        System.out.println("5. Exit");
-        Scanner sc = new Scanner(System.in);
-        int operationNumber = sc.nextInt();
-        if(operationNumber ==1 || operationNumber == 2 || operationNumber == 3 || operationNumber == 4) {
-            switch(operationNumber) {
-                case 1:
-                    obj.displayOutput("Addition", (numberOne+numberTwo));
-                    break;
-                case 2:
-                    obj.displayOutput("Subtraction", (numberOne-numberTwo));
-                    break;
-                case 3:
-                    obj.displayOutput("Multiplication", (numberOne*numberTwo));
-                    break;
-                case 4:
-                    obj.displayOutput("Division", (numberOne/numberTwo));
-            }
-        } else if(operationNumber == 5) {
-            System.out.println("Exited!");
-            return false;
-        }
-        else {
-            System.out.println("Enter a valid input");
-        }
-        return true;
+    private int addition() {
+        return numberOne+numberTwo;
     }
 
+    private int subtraction() {
+        return numberOne-numberTwo;
+    }
 
+    private int multiplication() {
+        return numberOne*numberTwo;
+    }
+
+    private int division() {
+        return numberOne/numberTwo;
+    }
+
+    Display display = new Display();
+
+    void inputNumbers() {
+        display.displayOutput("Enter first no");
+        setNumberOne(sc.nextInt());
+        display.displayOutput("Enter second no");
+        setNumberTwo(sc.nextInt());
+    }
+
+    void operate() {
+        boolean isContinue = true;
+        while(isContinue) {
+            display.displayMenu();
+            int operationNumber = sc.nextInt();
+            if(operationNumber == 5) {
+                display.displayExit();
+                isContinue = false;
+            }
+            switch(operationNumber) {
+                case 1:
+                    display.displayOutput("Addition", addition());
+                    break;
+                case 2:
+                    display.displayOutput("Subtraction", subtraction());
+                    break;
+                case 3:
+                    display.displayOutput("Multiplication", multiplication());
+                    break;
+                case 4:
+                    display.displayOutput("Division", division());
+                default:
+                    display.displayInvalidInput();
+            }
+        }
+    }
 }
