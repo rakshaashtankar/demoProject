@@ -77,7 +77,11 @@ public class Helper {
                     display.displayOutput("Multiplication", multiplication());
                     break;
                 case 4:
-                    display.displayOutput("Division", division());
+                    try{
+                        display.displayOutput("Division", division());
+                    } catch (ArithmeticException e) {
+                        display.displayOutput("Error dividing by 0");
+                    }
                     break;
                 case 5:
                     getHistory();
