@@ -12,7 +12,8 @@ public class Display {
         System.out.println("2. Subtraction");
         System.out.println("3. Multiplication");
         System.out.println("4. Division");
-        System.out.println("5. Exit");
+        System.out.println("5. Get History");
+        System.out.println("6. Exit");
     }
 
     void displayInvalidInput() {

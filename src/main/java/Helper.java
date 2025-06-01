@@ -7,6 +7,7 @@ public class Helper {
 
     Scanner sc = new Scanner(System.in);
 
+
     void setNumberOne(int numberOne) {
         this.numberOne = numberOne;
     }
@@ -17,22 +18,35 @@ public class Helper {
 
 
     private int addition() {
-        return numberOne+numberTwo;
+        int output = numberOne + numberTwo;
+        History.historyList.add(getFomattedStringForHistory("Addition", output));
+        return output;
+
     }
 
     private int subtraction() {
-        return numberOne-numberTwo;
+        int output = numberOne - numberTwo;
+        History.historyList.add(getFomattedStringForHistory("Subtraction", output));
+        return output;
     }
 
     private int multiplication() {
-        return numberOne*numberTwo;
+        int output = numberOne * numberTwo;
+        History.historyList.add(getFomattedStringForHistory("Multiplication", output));
+        return output;
     }
 
     private int division() {
-        return numberOne/numberTwo;
+        int output = numberOne / numberTwo;
+        History.historyList.add(getFomattedStringForHistory("Division", output));
+        return output;
     }
 
-    Display display = new Display();
+    private String getFomattedStringForHistory(String operation, int output) {
+        return operation + " of " + this.numberOne + this.numberTwo + " is " + output;
+    }
+
+    final Display display = new Display();
 
     void inputNumbers() {
         display.displayOutput("Enter first no");
@@ -46,24 +60,40 @@ public class Helper {
         while(isContinue) {
             display.displayMenu();
             int operationNumber = sc.nextInt();
-            if(operationNumber == 5) {
+            if(operationNumber == 6) {
                 display.displayExit();
                 isContinue = false;
             }
             switch(operationNumber) {
                 case 1:
                     display.displayOutput("Addition", addition());
+
                     break;
                 case 2:
                     display.displayOutput("Subtraction", subtraction());
+
                     break;
                 case 3:
                     display.displayOutput("Multiplication", multiplication());
                     break;
                 case 4:
                     display.displayOutput("Division", division());
+                    break;
+                case 5:
+                    getHistory();
+                    break;
                 default:
                     display.displayInvalidInput();
+            }
+        }
+    }
+
+    void getHistory() {
+        if(History.historyList.isEmpty()) {
+            display.displayOutput("No history found.");
+        } else {
+            for (String s : History.historyList) {
+                display.displayOutput(s);
             }
         }
     }
