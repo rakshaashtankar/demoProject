@@ -1,0 +1,1 @@
+Addition of 6 and 3 is 9.0Subtraction of 6 and 3 is 3.0Multiplication of 6 and 3 is 18.0Division of 6 and 3 is 2.0

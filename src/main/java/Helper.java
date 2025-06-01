@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Helper {
@@ -36,23 +43,51 @@ public class Helper {
         return output;
     }
 
-    private int division() {
-        int output = numberOne / numberTwo;
-        History.historyList.add(getFomattedStringForHistory("Division", output));
-        return output;
+    private float division() {
+        if(numberTwo ==0) {
+            display.displayOutput("Number cannot be divided by 0. Cannot perform division.");
+        }
+        else {
+            float output = (float)numberOne / numberTwo;
+            History.historyList.add(getFomattedStringForHistory("Division", output));
+            return output;
+        }
+        return 0;
     }
 
-    private String getFomattedStringForHistory(String operation, int output) {
-        return operation + " of " + this.numberOne + this.numberTwo + " is " + output;
+    private String getFomattedStringForHistory(String operation, float output) {
+        return operation + " of " + this.numberOne + " and " + this.numberTwo + " is " + output;
     }
 
     final Display display = new Display();
 
     void inputNumbers() {
-        display.displayOutput("Enter first no");
-        setNumberOne(sc.nextInt());
-        display.displayOutput("Enter second no");
-        setNumberTwo(sc.nextInt());
+        try{
+            String regEx = "\\d+";
+            while(true) {
+                display.displayOutput("Enter first number");
+                String numberOne = sc.next();
+                if(numberOne.matches(regEx)) {
+                    setNumberOne(Integer.parseInt(numberOne));
+                    break;
+                } else {
+                    display.displayOutput("Please enter a valid first number");
+                }
+            }
+            while(true) {
+                display.displayOutput("Enter second number");
+                String numberTwo = sc.next();
+                if(numberTwo.matches(regEx)) {
+                    setNumberTwo(Integer.parseInt(numberTwo));
+                    break;
+                } else {
+                    display.displayOutput("Please enter a valid second number");
+                }
+            }
+        } catch(InputMismatchException e) {
+            display.displayOutput("Please enter a valid integer input");
+        }
+
     }
 
     void operate() {
@@ -77,11 +112,7 @@ public class Helper {
                     display.displayOutput("Multiplication", multiplication());
                     break;
                 case 4:
-                    try{
-                        display.displayOutput("Division", division());
-                    } catch (ArithmeticException e) {
-                        display.displayOutput("Error dividing by 0");
-                    }
+                    display.displayOutput("Division", division());
                     break;
                 case 5:
                     getHistory();
@@ -99,6 +130,37 @@ public class Helper {
             for (String s : History.historyList) {
                 display.displayOutput(s);
             }
+            display.displayOutput("Do you want to save history into a file.");
+            char response = sc.next().charAt(0);
+            if(response == 'y') {
+                createFile();
+            }
+
+
         }
     }
+
+    void createFile() {
+        String filePath, fileName;
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            LocalDateTime dateTimeNow = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String formattedDateTime = dateTimeNow.format(formatter);
+            fileName = formattedDateTime + "_historyLog";
+            filePath = "/Users/rakshaashtankar/Documents/fullstackProjects/demoProject";
+            File newHistoryFile = new File(filePath+"/history/"+fileName+".txt");
+            newHistoryFile.createNewFile();
+            FileWriter fileWrite = new FileWriter(newHistoryFile);
+            for(String s: History.historyList) {
+                fileWrite.write(s + "\n");
+            }
+            fileWrite.close();
+        }catch(Exception ex1) {
+            display.displayOutput("Failed to create a file." + ex1.getMessage());
+        }
+
+    }
+
+
 }

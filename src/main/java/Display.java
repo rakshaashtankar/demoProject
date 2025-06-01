@@ -1,8 +1,9 @@
 public class Display {
-    void displayOutput(String operationName, int output) {
+    void displayOutput(String operationName, float output) {
         System.out.println(operationName + " is : " + output);
         System.out.println();
     }
+
     void displayOutput(String output) {
         System.out.println(output);
     }
