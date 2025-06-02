@@ -153,23 +153,17 @@ public class Helper {
             }
             File newHistoryFile = new File(filePath+"/"+fileName+".txt");
             newHistoryFile.createNewFile();
-            FileWriter fileWriter = null;
-            try{
-                fileWriter = new FileWriter(newHistoryFile);
+            try (FileWriter fileWriter = new FileWriter(newHistoryFile)) {
+
                 for(String record: History.historyList) {
                     fileWriter.write(record + System.lineSeparator());
                 }
                 display.displayOutput("History saved successfully to " + newHistoryFile.getAbsolutePath());
 
-            } catch (IOException e) {
-                display.displayOutput("Failed to save history" + e.getMessage());
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
             }
-
-
+            catch (IOException e) {
+                display.displayOutput("Failed to save history" + e.getMessage());
+            }
         }catch(Exception ex1) {
             display.displayOutput("Failed to create a file." + ex1.getMessage());
         }
