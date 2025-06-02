@@ -1,0 +1,3 @@
+Addition of 12 and 6 is 18.0
+Subtraction of 12 and 6 is 6.0
+Multiplication of 12 and 6 is 72.0

@@ -1,7 +1,6 @@
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
@@ -11,6 +10,7 @@ public class Helper {
 
     private int numberOne;
     private int numberTwo;
+    private static final String filePath = "/Users/rakshaashtankar/Documents/fullstackProjects/demoProject/history";
 
     Scanner sc = new Scanner(System.in);
 
@@ -141,21 +141,35 @@ public class Helper {
     }
 
     void createFile() {
-        String filePath, fileName;
+        String fileName;
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             LocalDateTime dateTimeNow = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
             String formattedDateTime = dateTimeNow.format(formatter);
             fileName = formattedDateTime + "_historyLog";
-            filePath = "/Users/rakshaashtankar/Documents/fullstackProjects/demoProject";
-            File newHistoryFile = new File(filePath+"/history/"+fileName+".txt");
-            newHistoryFile.createNewFile();
-            FileWriter fileWrite = new FileWriter(newHistoryFile);
-            for(String s: History.historyList) {
-                fileWrite.write(s + "\n");
+            File directory = new File(filePath);
+            if(!directory.exists()) {
+                directory.mkdirs();
             }
-            fileWrite.close();
+            File newHistoryFile = new File(filePath+"/"+fileName+".txt");
+            newHistoryFile.createNewFile();
+            FileWriter fileWriter = null;
+            try{
+                fileWriter = new FileWriter(newHistoryFile);
+                for(String record: History.historyList) {
+                    fileWriter.write(record + System.lineSeparator());
+                }
+                display.displayOutput("History saved successfully to " + newHistoryFile.getAbsolutePath());
+
+            } catch (IOException e) {
+                display.displayOutput("Failed to save history" + e.getMessage());
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            }
+
+
         }catch(Exception ex1) {
             display.displayOutput("Failed to create a file." + ex1.getMessage());
         }
